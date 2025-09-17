@@ -1,0 +1,10 @@
+<property-edits xmlns="http://karaf.apache.org/tools/property-edits/1.0.0">
+    <edits>
+        <edit>
+            <file>org.ops4j.pax.url.mvn.cfg</file>
+            <operation>put</operation>
+            <key>org.ops4j.pax.url.mvn.localRepository</key>
+            <value>nonsense</value>
+        </edit>
+    </edits>
+</property-edits>

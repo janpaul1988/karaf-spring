@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="${name}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.4.0">
+    <feature name="feature1" version="${project.version}">
+        <bundle>mvn:com.example.osgi/com.example.osgi.bundle1/${project.version}</bundle>
+    </feature>
+    <feature name="feature2" version="${project.version}">
+        <bundle>mvn:com.example.osgi/com.example.osgi.bundle2/${project.version}</bundle>
+    </feature>
+</features>

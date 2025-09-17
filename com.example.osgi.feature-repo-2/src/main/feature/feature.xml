@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="${name}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.4.0">
+    <repository>mvn:com.example.osgi/com.example.osgi.feature-repo-1/${older.version}/xml/features</repository>
+    <!-- Define a feature for your REST service -->
+    <feature name="feature3" version="${older.version}">
+        <feature dependency="true" version="${older.version}">feature1</feature>
+        <bundle>mvn:com.example.osgi/com.example.osgi.bundle3/${older.version}</bundle>
+    </feature>
+</features>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle1/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle2/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle3/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle3/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle4/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.bundle4/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-1/src/main/feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-2/src/main/feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-2/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-3/src/main/feature" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-3/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-3/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/feature-repo-1/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/feature-repo-1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/karaf-assembly/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/karaf-assembly/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

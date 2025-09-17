@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.example.osgi</groupId>
+        <artifactId>karaf-plugin-bug</artifactId>
+        <version>1.1</version>
+    </parent>
+    <artifactId>karaf-assembly</artifactId>
+    <packaging>karaf-assembly</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>framework</artifactId>
+            <version>${karaf.version}</version>
+            <type>kar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>standard</artifactId>
+            <version>${karaf.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>com.example.osgi</groupId>
+            <artifactId>com.example.osgi.feature-repo-3</artifactId>
+            <version>${project.version}</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.karaf.tooling</groupId>
+                <artifactId>karaf-maven-plugin</artifactId>
+                <version>${karaf.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <startupFeatures>
+                        <startupFeature>standard</startupFeature>
+                        <startupFeature>scr</startupFeature>
+                    </startupFeatures>
+                    <bootFeatures>
+                        <bootFeature>feature4</bootFeature>
+                    </bootFeatures>
+                    <javase>21</javase>
+                    <ignoreDependencyFlag>true</ignoreDependencyFlag>
+                    <finalName>${project.artifactId}</finalName>
+                    <archiveZip>false</archiveZip>
+                    <addTransitiveFeatures>true</addTransitiveFeatures>
+                    <propertyFileEdits>${build.outputDirectory}/assembly-property-edits.xml</propertyFileEdits>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
