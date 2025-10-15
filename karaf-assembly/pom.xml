@@ -26,11 +26,26 @@
             <type>xml</type>
         </dependency>
         <dependency>
+            <groupId>org.ops4j.pax.web</groupId>
+            <artifactId>pax-web-features</artifactId>
+            <version>11.0.1</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.features</groupId>
+            <artifactId>spring</artifactId>
+            <version>4.4.8</version>
+            <classifier>features</classifier>
+            <type>xml</type>
+        </dependency>
+        <dependency>
             <groupId>com.example.osgi</groupId>
             <artifactId>com.example.osgi.feature-repo-3</artifactId>
             <version>${project.version}</version>
             <classifier>features</classifier>
             <type>xml</type>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -42,9 +57,17 @@
                 <version>${karaf.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <installedFeatures>
+                    <startupFeatures>
+                        <startupFeature>minimal</startupFeature>
+                        <startupFeature>pax-web-war/11.0.1</startupFeature>
+                        <startupFeature>pax-web-http-tomcat/11.0.1</startupFeature>
+                        <startupFeature>spring</startupFeature>
+                        <startupFeature>spring-jms</startupFeature>
+                        <startupFeature>spring-web</startupFeature>
+                    </startupFeatures>
+                    <bootFeatures>
                         <feature>feature4</feature>
-                    </installedFeatures>
+                    </bootFeatures>
                     <javase>21</javase>
                     <finalName>${project.artifactId}</finalName>
                     <archiveZip>false</archiveZip>

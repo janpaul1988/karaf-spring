@@ -9,7 +9,7 @@
         <version>1.1</version>
     </parent>
     <artifactId>com.example.osgi.bundle4</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
@@ -25,45 +25,72 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi.core</artifactId>
-            <version>8.0.0</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.7.10</version>
-            <exclusions>
-            <exclusion>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-tomcat</artifactId>
-            </exclusion>
-            </exclusions>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>6.1.21</version>
+            <scope>provided</scope>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
+                    <supportedProjectTypes>
+                        <supportedProjectType>war</supportedProjectType>
+                    </supportedProjectTypes>
                     <instructions>
-                        <Bundle-Activator>
-                            com.example.osgi.bundle4.SpringBootBundleActivator
-                        </Bundle-Activator>
-                        <Import-Package>
-                            !org.springframework.*,
+                        <Import-Package>jakarta.servlet,
+                            jakarta.servlet.http, jakarta.servlet.annotation,
+                            org.springframework.web.servlet,
+                            org.springframework.context.annotation,
+                            org.springframework.stereotype,
+                            org.springframework.web.bind.annotation,
                             *;resolution:=optional
                         </Import-Package>
-                        <Embed-Dependency>
-                            *;scope=compile
-                        </Embed-Dependency>
-                        <Embed-Transitive>
-                            true
-                        </Embed-Transitive>
-                        <Export-Package>com.example.osgi.bundle4</Export-Package>
+                        <Export-Package/>
+                        <Private-Package>
+                            com.example.osgi.bundle4.spring.*
+                        </Private-Package>
+                        <Embed-Dependency>*;scope=compile</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
+                        <Embed-Directory>WEB-INF/lib</Embed-Directory>
+                        <Bundle-ClassPath>.</Bundle-ClassPath>
+                        <Web-ContextPath>/api</Web-ContextPath>
                     </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                    <webResources>
+                        <resource>
+                            <directory>target/classes</directory>
+                            <filtering>false</filtering>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
         </plugins>

@@ -2,10 +2,19 @@
 <features name="${name}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.4.0">
     <repository>mvn:com.example.osgi/com.example.osgi.feature-repo-1/${project.version}/xml/features</repository>
     <repository>mvn:com.example.osgi/com.example.osgi.feature-repo-2/${older.version}/xml/features</repository>
+    <repository>mvn:org.ops4j.pax.web/pax-web-features/11.0.1/xml/features</repository>
+    <repository>mvn:org.apache.karaf.features/spring/${karaf.version}/xml/features</repository>
+
     <!-- Define a feature for your REST service -->
     <feature name="feature4" version="${project.version}">
         <feature dependency="true" version="${project.version}">feature2</feature>
         <feature dependency="true" version="${older.version}">feature3</feature>
-        <bundle>mvn:com.example.osgi/com.example.osgi.bundle4/${project.version}</bundle>
+        <feature dependency="true">spring</feature>
+        <feature dependency="true">spring-web</feature>
+        <feature dependency="true">spring-jms</feature>
+        <feature dependency="true">pax-web-war</feature>
+        <feature dependency="true">pax-web-http-tomcat</feature>
+        <bundle>mvn:com.example.osgi/com.example.osgi.bundle4/${project.version}/war</bundle>
     </feature>
+
 </features>
