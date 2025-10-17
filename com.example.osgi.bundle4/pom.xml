@@ -36,7 +36,18 @@
             <version>6.1.21</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.cmpn</artifactId>
+            <version>7.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi.core</artifactId>
+            <version>7.0.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -55,6 +66,7 @@
                 <configuration>
                     <supportedProjectTypes>
                         <supportedProjectType>war</supportedProjectType>
+                        <supportedProjectType>bundle</supportedProjectType>
                     </supportedProjectTypes>
                     <instructions>
                         <Import-Package>jakarta.servlet,
@@ -69,10 +81,8 @@
                         <Private-Package>
                             com.example.osgi.bundle4.spring.*
                         </Private-Package>
-                        <Embed-Dependency>*;scope=compile</Embed-Dependency>
-                        <Embed-Transitive>true</Embed-Transitive>
-                        <Embed-Directory>WEB-INF/lib</Embed-Directory>
                         <Bundle-ClassPath>.</Bundle-ClassPath>
+                        <Bundle-Activator>com.example.osgi.bundle4.spring.OsgiServiceLocator</Bundle-Activator>
                         <Web-ContextPath>/api</Web-ContextPath>
                     </instructions>
                 </configuration>

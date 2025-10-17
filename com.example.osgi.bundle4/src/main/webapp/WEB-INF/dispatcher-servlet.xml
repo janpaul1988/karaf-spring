@@ -10,7 +10,5 @@
 
     <!-- Enable MVC annotations -->
     <mvc:annotation-driven/>
-
-    <!-- Manually register your controller -->
     <bean class="com.example.osgi.bundle4.spring.HelloController"/>
 </beans>

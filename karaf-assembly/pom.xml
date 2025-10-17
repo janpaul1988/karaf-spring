@@ -58,6 +58,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <startupFeatures>
+                        <startupFeature>scr</startupFeature>
                         <startupFeature>minimal</startupFeature>
                         <startupFeature>pax-web-war/11.0.1</startupFeature>
                         <startupFeature>pax-web-http-tomcat/11.0.1</startupFeature>
