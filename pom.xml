@@ -17,6 +17,7 @@
         <module>com.example.osgi.feature-repo-3</module>
         <module>com.example.osgi.bundle4</module>
         <module>karaf-assembly</module>
+        <module>integration-test</module>
 
     </modules>
 

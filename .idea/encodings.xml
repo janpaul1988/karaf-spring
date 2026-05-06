@@ -19,6 +19,8 @@
     <file url="file://$PROJECT_DIR$/com.example.osgi.feature-repo-3/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/feature-repo-1/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/feature-repo-1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/integration-test/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/integration-test/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/karaf-assembly/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/karaf-assembly/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

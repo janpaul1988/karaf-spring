@@ -48,7 +48,6 @@
                     <javase>21</javase>
                     <finalName>${project.artifactId}</finalName>
                     <archiveZip>false</archiveZip>
-                    <propertyFileEdits>${project.build.outputDirectory}/assembly-property-edits.xml</propertyFileEdits>
                 </configuration>
             </plugin>
         </plugins>
