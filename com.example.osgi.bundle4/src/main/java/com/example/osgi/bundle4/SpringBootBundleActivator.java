@@ -11,16 +11,30 @@ import org.springframework.context.annotation.Import;
 @Import(HelloController.class)
 public class SpringBootBundleActivator implements BundleActivator {
 
-    ConfigurableApplicationContext appContext;
+    private volatile ConfigurableApplicationContext appContext;
+    private Thread startupThread;
 
     @Override
     public void start(BundleContext bundleContext) {
-        Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-        appContext = SpringApplication.run(SpringBootBundleActivator.class);
+        // Capture the bundle classloader before the thread is created so Spring Boot's
+        // classpath scanning and SpringFactoriesLoader use it instead of the OSGi
+        // system classloader, where our embedded Spring JARs are not visible.
+        ClassLoader bundleClassLoader = this.getClass().getClassLoader();
+
+        // Spring Boot 3.x startup can exceed Karaf's bundle activation timeout, so we
+        // start it on a daemon thread and let activation return immediately.
+        startupThread = new Thread(() -> {
+            Thread.currentThread().setContextClassLoader(bundleClassLoader);
+            appContext = SpringApplication.run(SpringBootBundleActivator.class);
+        }, "spring-boot-startup");
+        startupThread.setDaemon(true);
+        startupThread.start();
     }
 
     @Override
     public void stop(BundleContext bundleContext) {
-        SpringApplication.exit(appContext, () -> 0);
+        if (appContext != null) {
+            SpringApplication.exit(appContext, () -> 0);
+        }
     }
 }

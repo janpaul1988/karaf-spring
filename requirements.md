@@ -2,14 +2,14 @@
 
 ## Overview
 
-This project runs an Apache Karaf 4.4.8 OSGi container with a Spring Boot 2.7.10 REST API embedded inside it as an OSGi bundle. The purpose is to validate that Spring Boot can be bootstrapped from within an OSGi `BundleActivator` and that inter-bundle dependencies resolve correctly across a multi-level Karaf feature hierarchy.
+This project runs an Apache Karaf 4.4.11 OSGi container with a Spring Boot 3.4.5 REST API embedded inside it as an OSGi bundle. The purpose is to validate that Spring Boot can be bootstrapped from within an OSGi `BundleActivator` and that inter-bundle dependencies resolve correctly across a multi-level Karaf feature hierarchy.
 
 ---
 
 ## System Architecture
 
 ```
-Apache Karaf 4.4.8 (OSGi container)
+Apache Karaf 4.4.11 (OSGi container)
 └── feature4 (installed at startup)
     ├── feature2 → com.example.osgi.bundle2 (v1.1)
     │              └── [provided by bundle4 classloader]
@@ -19,7 +19,7 @@ Apache Karaf 4.4.8 (OSGi container)
 
 com.example.osgi.bundle4 (v1.1) — Spring Boot bundle
 ├── BundleActivator: SpringBootBundleActivator
-├── Embedded: Spring Boot 2.7.10 + Jetty (all compile deps embedded via maven-bundle-plugin)
+├── Embedded: Spring Boot 3.4.5 + Jetty 12 (all compile deps embedded via maven-bundle-plugin)
 └── REST: GET /hello → port 8081
 ```
 
@@ -55,7 +55,14 @@ On `start()`:
 On `stop()`:
 1. `SpringApplication.exit()` shuts down the application context.
 
-The bundle JAR embeds all compile-scope transitive dependencies (Spring Boot, Jetty, Jackson, etc.) to avoid OSGi import conflicts. Spring packages are excluded from `Import-Package`; all other imports are `resolution:=optional`.
+The bundle JAR embeds all compile-scope transitive dependencies (Spring Boot 3.x, Jetty 12 EE10, Jackson, etc.) using `maven-bundle-plugin` `Embed-Dependency` + `Embed-Transitive`. This is the only viable embedding strategy because Spring Framework 6.x JARs in Maven Central no longer carry OSGi manifest headers and cannot be installed as first-class OSGi bundles.
+
+Key manifest headers for Spring Boot 3.x compatibility:
+- `!org.springframework.*` and `!jakarta.*` excluded from `Import-Package` (all embedded)
+- `DynamicImport-Package: *` required because CGLIB and Spring AOP generate proxy classes at runtime that cannot be declared statically in the manifest
+- All other imports are `resolution:=optional`
+
+Spring Boot 3.x startup is started on a **daemon background thread** rather than blocking `BundleActivator.start()`. This prevents Karaf from timing out bundle activation while Jetty 12 + Spring context initialisation completes.
 
 ---
 

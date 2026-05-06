@@ -30,18 +30,52 @@
             <version>8.0.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Exclude Tomcat (replaced by Undertow) and log4j artifacts.
+             log4j-api / log4j-to-slf4j both contain BundleActivator implementations that
+             bnd refuses to embed alongside our own activator. Spring Boot uses Logback by default. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.7.10</version>
+            <version>${spring.boot.version}</version>
             <exclusions>
-            <exclusion>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-tomcat</artifactId>
-            </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-to-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Undertow instead of Jetty: Jetty 12 EE10 attempts to load JspServlet, which
+             Karaf's boot classloader provides as a javax.servlet (not jakarta.servlet) version;
+             the instanceof check then fails. Undertow has no JSP machinery and avoids the clash.
+             log4j exclusions repeated here because undertow-starter also pulls spring-boot-starter
+             -> spring-boot-starter-logging -> log4j-to-slf4j transitively. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+            <version>${spring.boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-to-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -52,16 +86,28 @@
                         <Bundle-Activator>
                             com.example.osgi.bundle4.SpringBootBundleActivator
                         </Bundle-Activator>
+                        <!-- Exclude packages provided by Karaf's own bundles at incompatible versions:
+                             - org.eclipse.jetty.*: Karaf ships an older Jetty (for Pax Web); wiring
+                               to it makes Spring Boot's @ConditionalOnClass(HttpClient) pass, then
+                               fails with NoClassDefFoundError on newer Jetty classes like ClientConnector.
+                             - org.springframework.* / jakarta.*: fully embedded, never import externally.
+                             The *;resolution:=optional catch-all is still needed so JDK extension
+                             packages (org.xml.sax, org.w3c.dom, javax.xml, etc.) can be wired from
+                             Karaf's system bundle — they are not in java.* boot delegation. -->
                         <Import-Package>
+                            !org.eclipse.jetty.*,
                             !org.springframework.*,
+                            !jakarta.*,
+                            org.osgi.framework,
+                            com.example.osgi.bundle2,
+                            com.example.osgi.bundle3,
                             *;resolution:=optional
                         </Import-Package>
-                        <Embed-Dependency>
-                            *;scope=compile
-                        </Embed-Dependency>
-                        <Embed-Transitive>
-                            true
-                        </Embed-Transitive>
+                        <!-- runtime scope is needed for xnio-nio (the XNIO NIO provider),
+                             which is a runtime dependency of undertow-core but must be
+                             embedded for ServiceLoader to find it inside the OSGi fat bundle. -->
+                        <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
                         <Export-Package>com.example.osgi.bundle4</Export-Package>
                     </instructions>
                 </configuration>
